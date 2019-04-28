@@ -1,16 +1,15 @@
 'use strict';
 var Cart = require('../model/cart.model');
 
-
 exports.addToCart = function (req, res) {
-  Cart.findOne({ userId: req.body.userId }).
+  Cart.findOne({ userId: req.params.userId }).
     select().exec(function (err, foundCart) {
       if (err) {
         res.status(500).send({
           "result": 0
         });
       } else {
-        if (!foundCart) {
+      if (!foundCart) {
           var cart = new Cart();
           cart.userId = req.body.userId;
           cart.skuDetail = req.body.skuDetail;
@@ -18,26 +17,34 @@ exports.addToCart = function (req, res) {
             if (err) {
               res.status(500).json(err);
             } else {
-              res.status(200).json(cartDetail);
+              res.status(200).json(foundCart);
             }
           });
         } else {
-          var skuReq = req.body.skuDetail;
+         /*  foundCart.userId = 1;
+          foundCart.update(function (err, cartDetail) {
+            if (err) {
+              res.status(500).json(err);
+            } else {
+              res.status(200).json(cartDetail);
+            }
+          }); */
+          /* var skuReq = req.body.skuDetail;
           var cartDb = foundCart.skuDetail;
-          var key = "skuCode";
+          var key = "productId";
           skuReq.map(element => {
             if (cartDb.find(s => s[key] === element[key])) {
               const dbSame = cartDb.find(s => s[key] === element[key])
-              dbSame.set += element.set
-              dbSame.moq = element.moq
+              dbSame.pack += element.pack
             } else {
               foundCart.skuDetail.push(element);
             }
           });
-          foundCart.save(function (err, cartDetail) {
+          foundCart.save(function (err, cartStatus) {
             if (err) {
               res.status(500).json(err);
             } else {
+              
               Cart.aggregate([
                 { $match: { userId: req.body.userId } },
                 { $unwind: "$skuDetail" },
@@ -45,7 +52,7 @@ exports.addToCart = function (req, res) {
                   $lookup:
                   {
                     from: "products",
-                    localField: "skuDetail.productId",
+                    localField: new ObjectID(skuDetail.productId),
                     foreignField: "_id",
                     as: "cart_product"
                   }
@@ -60,8 +67,10 @@ exports.addToCart = function (req, res) {
                 }
               });
             }
-          });
-        }
+          });*/
+          /* res.status(200).json(foundCart);  */
+        } 
+        
       }
     });
 }
