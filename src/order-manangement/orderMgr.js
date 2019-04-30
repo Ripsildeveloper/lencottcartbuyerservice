@@ -48,3 +48,11 @@ exports.newOrderAdd = function (req, res) {
         console.log(error);
     }
 }
+exports.uniqueOrderView = function (req, res) {
+    try {
+        orderDA.uniqueOrderView(req, res);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}

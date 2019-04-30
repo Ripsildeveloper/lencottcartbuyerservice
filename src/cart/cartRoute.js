@@ -9,7 +9,7 @@ module.exports = function (app) {
         .get(cartMgr.findAllCart);
     app.route('/findcartproduct')
         .post(cartMgr.findCartProductDecrement);
-    app.route('/deletecart/:userId/skuid/:skuId')
+    app.route('/deletecart/:userId/itemId/:itemId')
         .delete(cartMgr.cartProductDelete);
 
 }

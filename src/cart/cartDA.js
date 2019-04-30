@@ -9,7 +9,7 @@ exports.addToCart = function (req, res) {
           "result": 0
         });
       } else {
-      if (!foundCart) {
+        if (!foundCart) {
           var cart = new Cart();
           cart.userId = req.body.userId;
           cart.items = req.body.items;
@@ -21,10 +21,10 @@ exports.addToCart = function (req, res) {
             }
           });
         } else {
-          var skuReq = req.body.items;
+          var itemReq = req.body.items;
           var cartDb = foundCart.items;
           var key = "productId";
-          skuReq.map(element => {
+          itemReq.map(element => {
             if (cartDb.find(s => s[key].toString() === element[key])) {
               const dbSame = cartDb.find(s => s[key].toString() === element[key])
               dbSame.pack += element.pack
@@ -32,7 +32,7 @@ exports.addToCart = function (req, res) {
               foundCart.items.push(element);
             }
           });
-          foundCart.save(function (err, cartData) {
+          foundCart.save(function (err, fountData) {
             if (err) {
               res.status(500).json(err);
             } else {
@@ -59,8 +59,7 @@ exports.addToCart = function (req, res) {
               });
             }
           });
-        } 
-        
+        }
       }
     });
 }
@@ -94,7 +93,7 @@ exports.findCartProductDecrement = function (req, res) {
     if (err) {
       res.status(500).json(err);
     } else {
-      var items = req.body.items; 
+      var items = req.body.items;
       for (var i = 0; i < findProductData.items.length; i++) {
         if (findProductData.items[i].productId.toString() == items.productId) {
           findProductData.items[i].pack = findProductData.items[i].pack - items.pack;
@@ -140,7 +139,7 @@ exports.cartProductDelete = function (req, res) {
           "result": 0
         });
       } else {
-        cartData.skuDetail.id(req.params.skuId).remove();
+        cartData.items.id(req.params.itemId).remove();
         cartData.save(function (err) {
           if (err) {
             res.status(201).send({

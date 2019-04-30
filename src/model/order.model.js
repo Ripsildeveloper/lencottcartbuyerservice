@@ -3,8 +3,9 @@ var mongoose = require('mongoose');
 const OrderSchema = new mongoose.Schema({
     customerId: String,
     orderId: String,
-    products: [{skuCode: String , set: Number, moq: Number, productId: mongoose.Schema.Types.ObjectId}],
-    total: String,
+    items: [{productId: mongoose.Schema.Types.ObjectId, pack: Number, 
+        ratioQty: Number}],
+    total: Number,
     addressDetails: [{
         name: String,
         mobileNumber: Number,
@@ -13,7 +14,7 @@ const OrderSchema = new mongoose.Schema({
         landmark: String,
         city: String,
         state: String,
-        pincode: String,
+        pincode: String
     }],
     paymentStatus: String,
     orderStatus: String,

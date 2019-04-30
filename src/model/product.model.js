@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Size = require('./size.model');
 
 const ProductSchema = new mongoose.Schema({
     productId: String,
@@ -24,12 +25,7 @@ const ProductSchema = new mongoose.Schema({
     supCategoryId: String,
     mainCategoryId: String,
     subCategoryId: String,
-    size: [{
-        sizeName: String,
-        skuCode: String,
-        ratio: String
-    }],
-
+    size: [Size]
 });
 
 
