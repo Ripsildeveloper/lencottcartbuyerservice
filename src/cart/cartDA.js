@@ -2,7 +2,7 @@
 var Cart = require('../model/cart.model');
 
 exports.addToCart = function (req, res) {
-  Cart.findOne({ userId: req.params.userId }).
+  Cart.findOne({ userId: req.body.userId }).
     select().exec(function (err, foundCart) {
       if (err) {
         res.status(500).send({
@@ -12,47 +12,38 @@ exports.addToCart = function (req, res) {
       if (!foundCart) {
           var cart = new Cart();
           cart.userId = req.body.userId;
-          cart.skuDetail = req.body.skuDetail;
+          cart.items = req.body.items;
           cart.save(function (err, cartDetail) {
-            if (err) {
-              res.status(500).json(err);
-            } else {
-              res.status(200).json(foundCart);
-            }
-          });
-        } else {
-         /*  foundCart.userId = 1;
-          foundCart.update(function (err, cartDetail) {
             if (err) {
               res.status(500).json(err);
             } else {
               res.status(200).json(cartDetail);
             }
-          }); */
-          /* var skuReq = req.body.skuDetail;
-          var cartDb = foundCart.skuDetail;
+          });
+        } else {
+          var skuReq = req.body.items;
+          var cartDb = foundCart.items;
           var key = "productId";
           skuReq.map(element => {
-            if (cartDb.find(s => s[key] === element[key])) {
-              const dbSame = cartDb.find(s => s[key] === element[key])
+            if (cartDb.find(s => s[key].toString() === element[key])) {
+              const dbSame = cartDb.find(s => s[key].toString() === element[key])
               dbSame.pack += element.pack
             } else {
-              foundCart.skuDetail.push(element);
+              foundCart.items.push(element);
             }
           });
-          foundCart.save(function (err, cartStatus) {
+          foundCart.save(function (err, cartData) {
             if (err) {
               res.status(500).json(err);
             } else {
-              
               Cart.aggregate([
                 { $match: { userId: req.body.userId } },
-                { $unwind: "$skuDetail" },
+                { $unwind: "$items" },
                 {
                   $lookup:
                   {
                     from: "products",
-                    localField: new ObjectID(skuDetail.productId),
+                    localField: "items.productId",
                     foreignField: "_id",
                     as: "cart_product"
                   }
@@ -67,8 +58,7 @@ exports.addToCart = function (req, res) {
                 }
               });
             }
-          });*/
-          /* res.status(200).json(foundCart);  */
+          });
         } 
         
       }
@@ -78,12 +68,12 @@ exports.addToCart = function (req, res) {
 exports.findAllCart = function (req, res) {
   Cart.aggregate([
     { $match: { userId: req.params.userId } },
-    { $unwind: "$skuDetail" },
+    { $unwind: "$items" },
     {
       $lookup:
       {
         from: "products",
-        localField: "skuDetail.productId",
+        localField: "items.productId",
         foreignField: "_id",
         as: "cart_product"
       }
@@ -104,10 +94,10 @@ exports.findCartProductDecrement = function (req, res) {
     if (err) {
       res.status(500).json(err);
     } else {
-      var skuDetail = req.body.skuDetail 
-      for (var i = 0; i < findProductData.skuDetail.length; i++) {
-        if (findProductData.skuDetail[i].skuCode == skuDetail.skuCode) {
-          findProductData.skuDetail[i].set = findProductData.skuDetail[i].set - skuDetail.set;
+      var items = req.body.items; 
+      for (var i = 0; i < findProductData.items.length; i++) {
+        if (findProductData.items[i].productId.toString() == items.productId) {
+          findProductData.items[i].pack = findProductData.items[i].pack - items.pack;
         }
       }
       findProductData.save(function (err, cartProductDetail) {
@@ -116,12 +106,12 @@ exports.findCartProductDecrement = function (req, res) {
         } else {
           Cart.aggregate([
             { $match: { userId: req.body.userId } },
-            { $unwind: "$skuDetail" },
+            { $unwind: "$items" },
             {
               $lookup:
               {
                 from: "products",
-                localField: "skuDetail.productId",
+                localField: "items.productId",
                 foreignField: "_id",
                 as: "cart_product"
               }
@@ -159,12 +149,12 @@ exports.cartProductDelete = function (req, res) {
           } else {
             Cart.aggregate([
               { $match: { userId: req.params.userId } },
-              { $unwind: "$skuDetail" },
+              { $unwind: "$items" },
               {
                 $lookup:
                 {
                   from: "products",
-                  localField: "skuDetail.productId",
+                  localField: "items.productId",
                   foreignField: "_id",
                   as: "cart_product"
                 }

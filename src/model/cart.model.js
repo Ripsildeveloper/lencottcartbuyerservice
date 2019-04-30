@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 const cartSchema = new mongoose.Schema({
     userId: String,
-    skuDetail: [{productId: String, pack: Number} ],
+    items: [{productId: mongoose.Schema.Types.ObjectId, pack: Number} ],
   });
 
   const Cart = mongoose.model('cart', cartSchema);
