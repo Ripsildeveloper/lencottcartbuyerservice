@@ -11,5 +11,7 @@ module.exports = function (app) {
         .post(cartMgr.findCartProductDecrement);
     app.route('/deletecart/:userId/itemId/:itemId')
         .delete(cartMgr.cartProductDelete);
+    app.route('/deletecart/:userId')
+        .delete(cartMgr.cartDelete);
 
 }

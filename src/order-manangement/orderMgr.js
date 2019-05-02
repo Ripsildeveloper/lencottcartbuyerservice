@@ -56,3 +56,20 @@ exports.uniqueOrderView = function (req, res) {
         console.log(error);
     }
 }
+exports.updateProducts = function (req, res) {
+    try {
+        orderDA.updateProducts(req, res);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+exports.updateQtyProducts = function (req, res) {
+    try {
+        orderDA.updateQtyProducts(req, res);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}

@@ -33,3 +33,11 @@ exports.cartProductDelete = function (req, res) {
         console.log(error);
     }
 }
+
+exports.cartDelete = function (req, res) {
+    try {
+        cartDA.cartDelete(req, res);
+    } catch (error) {
+        console.log(error);
+    }
+}

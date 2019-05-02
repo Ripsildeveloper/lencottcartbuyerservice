@@ -27,9 +27,7 @@ exports.viewProducts = function (req, res) {
 
 
 exports.viewSingleProducts = function (req, res) {
-    Product.findById(req.params.productId
-
-        ,
+    Product.findById(req.params.productId,
         function (err, product) {
             if (err) {
                 res.status(500).send({

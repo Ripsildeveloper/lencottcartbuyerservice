@@ -172,3 +172,24 @@ exports.cartProductDelete = function (req, res) {
       }
     });
 }
+
+
+exports.cartDelete = function (req, res) {
+  Cart.findOneAndRemove({userId : req.params.userId }, function (err) {
+      if (err) {
+          res.status(500).send({
+              "result": 0
+          });
+      } else {
+        Cart.find({}).select().exec(function (err, deleteCart) {
+              if (err) {
+                  res.status(500).json({
+                      "result": 0
+                  })
+              } else {
+                  res.status(200).json(deleteCart)
+              }
+          })
+      }
+  });
+}

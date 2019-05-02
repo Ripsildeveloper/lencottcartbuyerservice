@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
-
+var Size = require('./size.model');
 const OrderSchema = new mongoose.Schema({
     customerId: String,
     orderId: String,
     items: [{productId: mongoose.Schema.Types.ObjectId, pack: Number, 
-        ratioQty: Number}],
+        ratioQty: Number, size: [Size]}],
     total: Number,
     addressDetails: [{
         name: String,
