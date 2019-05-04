@@ -80,7 +80,7 @@ exports.updateQtyProducts = function (req, res) {
         var item = order.items[i].size;
         var itemProduct = order.items[i];
         for (var j = 0; j < item.length; j++) {
-          var qty = item[j].ratio * itemProduct.pack;
+          var qty = item[j].ratio * itemProduct.pack * itemProduct.moq;
           var skuCode = item[j].skuCode;
           Product.update({
             _id: itemProduct.productId, "size.skuCode": skuCode
@@ -90,7 +90,7 @@ exports.updateQtyProducts = function (req, res) {
                 message: "Some error occurred while retrieving products."
               });
             } else {
-              /* res.status(200).json(product); */
+              /* res.status(200).json(update); */
               updatedData.push(update)
             }
           });

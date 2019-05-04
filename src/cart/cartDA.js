@@ -17,7 +17,27 @@ exports.addToCart = function (req, res) {
             if (err) {
               res.status(500).json(err);
             } else {
-              res.status(200).json(cartDetail);
+              Cart.aggregate([
+                { $match: { userId: req.body.userId } },
+                { $unwind: "$items" },
+                {
+                  $lookup:
+                  {
+                    from: "products",
+                    localField: "items.productId",
+                    foreignField: "_id",
+                    as: "cart_product"
+                  }
+                }
+              ], function (err, cartData) {
+                if (err) {
+                  res.status(500).send({
+                    message: "no cart product"
+                  });
+                } else {
+                  res.status(200).json(cartData);
+                }
+              });
             }
           });
         } else {
