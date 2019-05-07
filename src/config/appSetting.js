@@ -10,6 +10,6 @@ module.exports = {
   bannerServerPath: 'https://benjolb2b.com/admin/images/banner/',
   adsServerPath: 'https://benjolb2b.com/admin/images/ads/',
   logoServerPath: 'https://benjolb2b.com/admin/images/logo/',
-  headerServerPath: '/home/ubuntu/my-folder/app/seller-app/images/header' */
+  headerServerPath: '/home/ubuntu/my-folder/app/seller-app/images/header'
 };
 
