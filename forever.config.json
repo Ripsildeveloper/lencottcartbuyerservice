@@ -3,5 +3,5 @@
     "append": true,
     "watch": true,
     "script": "server.js",
-    "sourceDir": "/home/ubuntu/app/service-buyer/src"
+    "sourceDir": "/home/ubuntu/my-folder/app/service-buyer/src"
 }
