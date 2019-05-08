@@ -1,5 +1,5 @@
 {
-  "name": "service-buyer",
+  "name": "buyer-service",
   "version": "1.0.0",
   "description": "Buyer Service",
   "main": "./src/server.js",
